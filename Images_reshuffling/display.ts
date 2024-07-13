@@ -7,7 +7,9 @@ interface imageData {
 async function fetchImages(): Promise<imageData[]> {
     try {
         const response = await fetch('https://picsum.photos/v2/list?page=2&limit=100');
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok){
+         throw new Error(`HTTP error! status: ${response.status}`);
+        }  
         return await response.json();
     } catch (error) {
         console.log(`Failed to fetch images: ${error}`);
@@ -16,12 +18,12 @@ async function fetchImages(): Promise<imageData[]> {
 }
 
 function displayImages(images: imageData[]) {
-    const container = document.getElementById('image-container');
+    const container = document.querySelector('#image-container');
     if (container) {
         container.innerHTML = ''; 
-        images.slice(0, 9).forEach((image) => {
+        images.slice(0, 12).forEach((image) => {
             const imgElement = document.createElement('img');
-            imgElement.src = image.download_url; //download url contains the id, width and height of the image
+            imgElement.src = image.download_url; 
             imgElement.alt = image.author;
             imgElement.className = 'w-full h-60 object-cover rounded-lg shadow-md';
             container.appendChild(imgElement);
@@ -47,7 +49,6 @@ async function reshuffleImages() {
 document.addEventListener('DOMContentLoaded', async () => {
     currentImages = await fetchImages();
     displayImages(currentImages);
-
     const reshuffleButton = document.getElementById('reshuffle-button');
     reshuffleButton?.addEventListener('click', reshuffleImages);
 });

@@ -17,16 +17,16 @@ function fetchImages() {
             return yield response.json();
         }
         catch (error) {
-            console.error("Failed to fetch images:", error);
+            console.log(`Failed to fetch images: ${error}`);
             return [];
         }
     });
 }
-function renderImages(images) {
-    const container = document.getElementById('image-container');
+function displayImages(images) {
+    const container = document.querySelector('#image-container');
     if (container) {
         container.innerHTML = '';
-        images.slice(0, 9).forEach((image) => {
+        images.slice(0, 12).forEach((image) => {
             const imgElement = document.createElement('img');
             imgElement.src = image.download_url;
             imgElement.alt = image.author;
@@ -46,12 +46,12 @@ let currentImages = [];
 function reshuffleImages() {
     return __awaiter(this, void 0, void 0, function* () {
         currentImages = shuffleArray(currentImages);
-        renderImages(currentImages);
+        displayImages(currentImages);
     });
 }
 document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, void 0, function* () {
     currentImages = yield fetchImages();
-    renderImages(currentImages);
+    displayImages(currentImages);
     const reshuffleButton = document.getElementById('reshuffle-button');
     reshuffleButton === null || reshuffleButton === void 0 ? void 0 : reshuffleButton.addEventListener('click', reshuffleImages);
 }));
